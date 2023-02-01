@@ -1,0 +1,19 @@
+{
+  "name": "App",
+  "version": "0.0.1",
+  "main": "index.js",
+  "dependencies": {
+    "total4": "latest"
+  },
+  "scripts": {
+    "start": "node index.js 8000"
+  },
+  "keywords": [
+    "openplatform",
+    "application",
+    "ui",
+    "studio"
+  ],
+  "author": "Total.js",
+  "license": "MIT"
+}

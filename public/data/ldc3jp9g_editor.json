@@ -1,0 +1,125 @@
+{
+	"name": "User profile",
+	"description": "",
+	"icon": "ti ti-account",
+	"version": "0.0.1",
+	"css": ":root{--radius:5px}\n.UI_app{padding:0 20px 50px;width:100%;max-width:1200px;margin:30px auto}\n.UI_gap{margin-bottom:var(--margin)}\n.UI_label{font-size:11px;color:#B0B0B0;margin-bottom:5px}\n.UI_label i{margin-right:5px}\n.UI_border{border:1px solid #E0E0E0;padding:var(--gap);border-radius:var(--radius)}",
+	"editor": {
+		"download": false,
+		"paths": "",
+		"codes": "",
+		"upload": ""
+	},
+	"components": {
+		"kokotaris": "https://uibuilder.totaljs.com/components/kokotaris/editor.html",
+		"callout": "https://uibuilder.totaljs.com/components/callout/editor.html",
+		"headline": "https://uibuilder.totaljs.com/components/headline/editor.html",
+		"enable": "https://uibuilder.totaljs.com/components/enable/editor.html",
+		"columns": "https://uibuilder.totaljs.com/components/columns/editor.html",
+		"video": "https://uibuilder.totaljs.com/components/video/editor.html",
+		"counter": "https://uibuilder.totaljs.com/components/counter/editor.html",
+		"container": "https://uibuilder.totaljs.com/components/container/editor.html",
+		"cards": "https://uibuilder.totaljs.com/components/cards/editor.html",
+		"form": "https://uibuilder.totaljs.com/components/form/editor.html",
+		"show": "https://uibuilder.totaljs.com/components/show/editor.html",
+		"datareader": "https://uibuilder.totaljs.com/components/datareader/editor.html",
+		"datasource": "https://uibuilder.totaljs.com/components/datasource/editor.html",
+		"paragraph": "https://uibuilder.totaljs.com/components/paragraph/editor.html",
+		"sendtoinput": "https://uibuilder.totaljs.com/components/sendtoinput/editor.html",
+		"comment": "https://uibuilder.totaljs.com/components/comment/editor.html",
+		"hr": "https://uibuilder.totaljs.com/components/hr/editor.html",
+		"sound": "https://uibuilder.totaljs.com/components/sound/editor.html",
+		"image": "https://uibuilder.totaljs.com/components/image/editor.html",
+		"checkbox": "https://uibuilder.totaljs.com/components/checkbox/editor.html",
+		"textbox": "https://uibuilder.totaljs.com/components/textbox/editor.html",
+		"textarea": "https://uibuilder.totaljs.com/components/textarea/editor.html",
+		"icon": "https://uibuilder.totaljs.com/components/icon/editor.html",
+		"color": "https://uibuilder.totaljs.com/components/color/editor.html",
+		"tabs": "https://uibuilder.totaljs.com/components/tabs/editor.html",
+		"checkboxlist": "https://uibuilder.totaljs.com/components/checkboxlist/editor.html",
+		"infocard": "https://uibuilder.totaljs.com/components/infocard/editor.html",
+		"testreader": "https://uibuilder.totaljs.com/components/testreader/editor.html",
+		"barchart": "https://uibuilder.totaljs.com/components/barchart/editor.html",
+		"columnchart": "https://uibuilder.totaljs.com/components/columnchart/editor.html"
+	},
+	"children": [
+		[
+			{
+				"children": [
+					[
+						{
+							"children": [],
+							"id": "cidldc3s2xm",
+							"config": {
+								"html": "Enter text for headline",
+								"align": "left",
+								"type": "h1",
+								"name": "Headline"
+							},
+							"component": "headline",
+							"gap": true
+						},
+						{
+							"children": [],
+							"id": "cidldcs6vke",
+							"config": {
+								"url": "",
+								"interval": 0,
+								"read": "",
+								"name": "Test reader",
+								"path": ""
+							},
+							"component": "testreader"
+						},
+						{
+							"children": [
+								[
+									{
+										"children": [],
+										"id": "cidldd2f99u",
+										"config": {
+											"height": 0,
+											"paddingbars": 5,
+											"limit": 0,
+											"paggindgroup": 10,
+											"pl": 20,
+											"pt": 10,
+											"pb": 25,
+											"prselected": 5,
+											"axisX": true,
+											"axisY": true,
+											"radius": 2,
+											"offsetX": 10,
+											"offsetY": 10,
+											"required": false,
+											"name": "Bar chart",
+											"datasourceid": "@cidldcs6vke"
+										},
+										"component": "barchart"
+									}
+								],
+								[]
+							],
+							"id": "cidldd5zon1",
+							"config": {
+								"count": 2,
+								"name": "Columns"
+							},
+							"component": "columns"
+						}
+					]
+				],
+				"id": "1",
+				"config": {
+					"name": "Container"
+				},
+				"component": "container"
+			}
+		]
+	],
+	"inputs": [],
+	"outputs": [],
+	"args": {},
+	"id": "ldc3jp9g",
+	"type": "view"
+}

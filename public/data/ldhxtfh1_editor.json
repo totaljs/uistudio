@@ -1,0 +1,208 @@
+{
+	"name": "Forms",
+	"description": "",
+	"icon": "ti ti-totaljs",
+	"version": "0.0.1",
+	"css": ".CLASS:root{--radius:5px}\n.CLASS{padding:0 20px 50px;width:100%;max-width:900px;margin:30px auto}\n.CLASS .UI_gap{margin-bottom:var(--margin)}\n.CLASS .UI_label{font-size:11px;color:#B0B0B0;margin-bottom:5px}\n.CLASS .UI_label i{margin-right:5px}\n.CLASS .UI_border{border:1px solid #E0E0E0;padding:var(--gap);border-radius:var(--radius)}",
+	"editor": {
+		"download": false,
+		"paths": "",
+		"codes": "",
+		"upload": ""
+	},
+	"components": {
+		"callout": "https://uibuilder.totaljs.com/components/callout/editor.html",
+		"headline": "https://uibuilder.totaljs.com/components/headline/editor.html",
+		"enable": "https://uibuilder.totaljs.com/components/enable/editor.html",
+		"columns": "https://uibuilder.totaljs.com/components/columns/editor.html",
+		"video": "https://uibuilder.totaljs.com/components/video/editor.html",
+		"counter": "https://uibuilder.totaljs.com/components/counter/editor.html",
+		"container": "https://uibuilder.totaljs.com/components/container/editor.html",
+		"cards": "https://uibuilder.totaljs.com/components/cards/editor.html",
+		"form": "https://uibuilder.totaljs.com/components/form/editor.html",
+		"show": "https://uibuilder.totaljs.com/components/show/editor.html",
+		"datagenerator": "https://uibuilder.totaljs.com/components/datagenerator/editor.html",
+		"datareader": "https://uibuilder.totaljs.com/components/datareader/editor.html",
+		"datasource": "https://uibuilder.totaljs.com/components/datasource/editor.html",
+		"datagrid": "https://uibuilder.totaljs.com/components/datagrid/editor.html",
+		"paragraph": "https://uibuilder.totaljs.com/components/paragraph/editor.html",
+		"sendtoinput": "https://uibuilder.totaljs.com/components/sendtoinput/editor.html",
+		"comment": "https://uibuilder.totaljs.com/components/comment/editor.html",
+		"hr": "https://uibuilder.totaljs.com/components/hr/editor.html",
+		"sound": "https://uibuilder.totaljs.com/components/sound/editor.html",
+		"image": "https://uibuilder.totaljs.com/components/image/editor.html",
+		"checkbox": "https://uibuilder.totaljs.com/components/checkbox/editor.html",
+		"textbox": "https://uibuilder.totaljs.com/components/textbox/editor.html",
+		"textarea": "https://uibuilder.totaljs.com/components/textarea/editor.html",
+		"icon": "https://uibuilder.totaljs.com/components/icon/editor.html",
+		"color": "https://uibuilder.totaljs.com/components/color/editor.html",
+		"tabs": "https://uibuilder.totaljs.com/components/tabs/editor.html",
+		"checkboxlist": "https://uibuilder.totaljs.com/components/checkboxlist/editor.html",
+		"infocard": "https://uibuilder.totaljs.com/components/infocard/editor.html",
+		"barchart": "https://uibuilder.totaljs.com/components/barchart/editor.html",
+		"captureoutput": "/components/captureoutput/editor.html",
+		"json": "/components/json/editor.html"
+	},
+	"children": [
+		[
+			{
+				"children": [
+					[
+						{
+							"children": [],
+							"id": "cidldhye35s",
+							"component": "sendtoinput",
+							"config": {
+								"input": "cidldhxtpfk_clear",
+								"write": "",
+								"read": "",
+								"name": "Send to input",
+								"path": "@cidldhysimd"
+							},
+							"gap": true
+						},
+						{
+							"children": [],
+							"id": "cidldhyudjw",
+							"component": "captureoutput",
+							"config": {
+								"input": "",
+								"write": "",
+								"read": "",
+								"name": "Capture output",
+								"output": "cidldhxtpfk_submit"
+							},
+							"gap": true
+						},
+						{
+							"children": [],
+							"id": "cidldhysimd",
+							"component": "checkbox",
+							"config": {
+								"required": false,
+								"name": "Reset form"
+							},
+							"gap": true
+						},
+						{
+							"children": [
+								[
+									{
+										"children": [
+											[
+												{
+													"children": [],
+													"id": "cidldhxttxu",
+													"component": "textbox",
+													"config": {
+														"required": true,
+														"type": "string",
+														"monospace": false,
+														"name": "Name",
+														"decimals": 0,
+														"path": "name",
+														"placeholder": "Enter your name"
+													},
+													"gap": true
+												}
+											],
+											[
+												{
+													"children": [],
+													"id": "cidldhxyv5s",
+													"component": "textbox",
+													"config": {
+														"required": true,
+														"type": "email",
+														"monospace": false,
+														"name": "E-mail address",
+														"decimals": 0,
+														"path": "email"
+													}
+												}
+											]
+										],
+										"id": "cidldhxyk4x",
+										"component": "columns",
+										"config": {
+											"count": 2,
+											"background": true,
+											"name": "Columns"
+										},
+										"gap": true
+									}
+								]
+							],
+							"id": "cidldhxtpfk",
+							"component": "form",
+							"config": {
+								"border": false,
+								"button": "SUBMIT",
+								"checkvisible": true,
+								"autoreset": true,
+								"name": "My form"
+							},
+							"gap": true
+						},
+						{
+							"children": [],
+							"id": "cidldhz1bzs",
+							"component": "json",
+							"config": {
+								"name": "To JSON",
+								"path": "@cidldhyudjw"
+							}
+						}
+					]
+				],
+				"id": "1",
+				"component": "container",
+				"config": {
+					"name": "Container"
+				}
+			}
+		]
+	],
+	"inputs": [
+		{
+			"id": "cidldhxtpfk_load",
+			"ref": "load",
+			"name": "My form: Load data",
+			"component": "My form",
+			"input": "Load data",
+			"icon": "ti ti-database-alt",
+			"note": ""
+		},
+		{
+			"id": "cidldhxtpfk_reset",
+			"ref": "reset",
+			"name": "My form: Reset",
+			"component": "My form",
+			"input": "Reset",
+			"icon": "ti ti-database-alt",
+			"note": "Reset form"
+		},
+		{
+			"id": "cidldhxtpfk_clear",
+			"ref": "clear",
+			"name": "My form: Clear",
+			"component": "My form",
+			"input": "Clear",
+			"icon": "ti ti-database-alt",
+			"note": "Clear form"
+		}
+	],
+	"outputs": [
+		{
+			"id": "cidldhxtpfk_submit",
+			"ref": "submit",
+			"name": "My form: Submit",
+			"component": "My form",
+			"output": "Submit",
+			"icon": "ti ti-database-alt",
+			"note": "Process data"
+		}
+	],
+	"args": {},
+	"id": "ldhxtfh1"
+}

@@ -1,0 +1,163 @@
+@{layout('')}
+@{title(config.name)}
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=11" />
+	<meta name="format-detection" content="telephone=no" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<meta name="robots" content="all,follow" />
+	<link href="@{'%cdn'}/spa.min@19.css" rel="stylesheet" />
+	<script src="@{'%cdn'}/spa.min@19.js"></script>
+	<script src="@{REPO.ui}"></script>
+	@{import('meta', 'head', 'default.css', 'default.js', 'favicon.ico')}
+</head>
+<body class="invisible">
+
+	<ui-component name="exec"></ui-component>
+	<ui-component name="locale"></ui-component>
+	<ui-component name="errorhandler"></ui-component>
+	<ui-component name="loading" config="style:2" class="hidden"></ui-component>
+	<ui-component name="sounds" config="volume:40"></ui-component>
+	<ui-component name="unsaved" path="common.unsaved"></ui-component>
+
+	<ui-component name="LAZY notify" config="position:bottom right"></ui-component>
+	<ui-component name="LAZY message" config="style:2"></ui-component>
+	<ui-component name="LAZY clipboard"></ui-component>
+	<ui-component name="LAZY menu" config="style:2"></ui-component>
+
+	<ui-component name="ready" class="invisible">
+		<div class="appmenu">
+			<div>
+				<span class="mainmenu exec" data-href="/"><i class="ti ti-menu"></i></span>
+			</div>
+			<ui-component name="viewbox" config="parent:window;margin:60">
+				<ui-component name="aselected" path="NAV.url" style="margin-top:15px">
+					<ui-bind path="common.plugins" config="template">
+						<script type="text/html">
+							{{ foreach m in value }}
+								<a href="{{ m.url }}" class="jR" title="{{ m.name }}"><i class="{{ m.icon }}"></i></a>
+							{{ end }}
+						</script>
+					</ui-bind>
+				</ui-component>
+			</ui-component>
+		</div>
+
+		<div class="appmain">
+			<div class="pages">
+				<ui-bind path="common.plugins" config="template">
+					<script type="text/html">
+						{{ foreach m in value }}
+						<ui-component name="page" path="common.page" config="if:plugin{{ m.id }};url:/_{{ m.id }}/index.html;reload:?/reload;id:_{{ m.id }}" class="hidden invisible"></ui-component>
+						{{ if m.routes }}
+							{{ foreach route in m.routes }}
+							<ui-component name="page" path="common.page" config="if:plugin{{ m.id }}{{ route.html }};url:/_{{ m.id }}/{{ route.html }}.html;reload:?/reload;id:_{{ m.id }}" class="hidden invisible"></ui-component>
+							{{ end }}
+						{{ fi }}
+						{{ end }}
+					</script>
+				</ui-bind>
+			</div>
+			<ui-component name="page" path="common.page" config="if:welcome;url:/pages/index.html;reload:?/reload" class="hidden invisible"></ui-component>
+		</div>
+	</ui-component>
+
+	@{json(model, 'pluginsdata')}
+
+	@{if user.iframe}
+	<script src="@{user.iframe}"></script>
+	@{fi}
+
+	<script>
+
+		var user = null;
+		var common = {};
+
+		common.name = '@{CONF.name}';
+		common.plugins = PARSE('#pluginsdata');
+		common.ready = false;
+
+		// Injects Token to every API request
+		(function() {
+			var openplatform = NAV.query.openplatform || '';
+			if (openplatform) {
+				var hostname = openplatform.substring(0, openplatform.indexOf('/', 10));
+				openplatform = '?openplatform=' + encodeURIComponent(openplatform);
+			} else
+				common.ready = true;
+			DEF.api = '/api/' + openplatform;
+			$('body').rclass('invisible', 200);
+		})();
+
+		NAV.custom(true);
+		NAV.clientside('.jR');
+
+		MIDDLEWARE('init', function(next) {
+			if (common.ready)
+				next();
+			else
+				WAIT('common.ready', next);
+		});
+
+		PLUGIN('common', function(exports) {
+
+			var model = exports.model;
+
+			model.plugins.forEach(function(plugin) {
+				plugin.url = '/' + plugin.id + '/';
+				ROUTE(plugin.url, () => exports.set('page', 'plugin' + plugin.id), 'init');
+				plugin.routes && plugin.routes.forEach(item => ROUTE(item.url, () => exports.set('page', 'plugin' + plugin.id + item.html), 'init'));
+			});
+
+			exports.refresh = function() {
+				TAPI('account', 'user');
+			};
+
+			exports.refresh();
+
+		});
+
+		ROUTE('/', function() {
+			SET('common.page', 'welcome');
+		}, 'init');
+
+		ON('@flag showloading', function() {
+			SETTER('loading/show');
+		});
+
+		ON('@flag hideloading', function() {
+			SETTER('loading/hide', 700);
+		});
+
+		// A simple integration for navigation
+		W.APP_INIT = function() {
+
+			common.ready = true;
+
+			APP.on('init', function() {
+
+				var ready = false;
+
+				ON('location', function(url) {
+					if (url === '/' && !ready)
+						ready = true;
+					else
+						APP.path(url);
+				});
+			});
+
+			APP.on('path', function(path) {
+				if (NAV.url !== path)
+					REDIRECT(path);
+			});
+
+		};
+
+
+	</script>
+
+</body>
+</html>

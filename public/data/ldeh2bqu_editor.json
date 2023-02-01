@@ -1,0 +1,130 @@
+{
+	"name": "Datagrid",
+	"description": "",
+	"icon": "ti ti-totaljs",
+	"version": "0.0.1",
+	"css": ".CLASS:root{--radius:5px}\n.CLASS{padding:0 20px 50px;width:100%;max-width:900px;margin:30px auto}\n.CLASS .UI_gap{margin-bottom:var(--margin)}\n.CLASS .UI_label{font-size:11px;color:#B0B0B0;margin-bottom:5px}\n.CLASS .UI_label i{margin-right:5px}\n.CLASS .UI_border{border:1px solid #E0E0E0;padding:var(--gap);border-radius:var(--radius)}",
+	"editor": {
+		"download": true,
+		"paths": "",
+		"codes": "",
+		"upload": ""
+	},
+	"components": {
+		"container": "https://uibuilder.totaljs.com/components/container/editor.html",
+		"datagrid": "/components/datagrid/editor.html",
+		"datareader": "/components/datareader/editor.html"
+	},
+	"children": [
+		[
+			{
+				"children": [
+					[
+						{
+							"children": [],
+							"id": "cidldeok50l",
+							"component": "datareader",
+							"config": {
+								"url": "https://newflow.totaljs.com/api/products/",
+								"interval": 0,
+								"read": "",
+								"name": "Products"
+							},
+							"x": 113,
+							"y": 29,
+							"zindex": 1
+						},
+						{
+							"children": [],
+							"id": "cidldent70k",
+							"component": "datagrid",
+							"config": {
+								"datasource": "@cidldeok50l",
+								"border": true,
+								"icon": "ti ti-totaljs",
+								"columns": [
+									{
+										"type": "string",
+										"codelist": "",
+										"format": "",
+										"align": 0,
+										"width": 150,
+										"title": "",
+										"name": "Name",
+										"path": "name",
+										"colorize": false,
+										"hidden": false,
+										"sort": true,
+										"filter": true,
+										"template": ""
+									},
+									{
+										"codelist": "",
+										"colorize": false,
+										"template": "",
+										"filter": true,
+										"format": "",
+										"hidden": false,
+										"align": 0,
+										"title": "",
+										"width": 150,
+										"name": "Quantity",
+										"path": "quantity",
+										"sort": true,
+										"type": "string"
+									},
+									{
+										"codelist": "",
+										"colorize": false,
+										"template": "",
+										"filter": true,
+										"format": "",
+										"hidden": false,
+										"align": 0,
+										"title": "",
+										"width": 150,
+										"name": "Reference",
+										"path": "reference",
+										"sort": true,
+										"type": "string"
+									},
+									{
+										"codelist": "",
+										"colorize": false,
+										"template": "",
+										"filter": true,
+										"format": "",
+										"hidden": false,
+										"align": 0,
+										"title": "",
+										"width": 150,
+										"name": "Created",
+										"path": "dtcreated",
+										"sort": true,
+										"type": "date"
+									}
+								],
+								"margin": 0,
+								"height": "500",
+								"minheight": 300,
+								"numbering": true,
+								"checkbox": false,
+								"autoselect": false,
+								"name": "Datagrid"
+							}
+						}
+					]
+				],
+				"id": "1",
+				"component": "container",
+				"config": {
+					"name": "Container"
+				}
+			}
+		]
+	],
+	"inputs": [],
+	"outputs": [],
+	"args": {},
+	"id": "ldeh2bqu"
+}

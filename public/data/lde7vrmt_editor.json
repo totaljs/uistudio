@@ -1,0 +1,62 @@
+{
+	"name": "Terezka TEST",
+	"description": "",
+	"icon": "ti ti-totaljs",
+	"version": "0.0.1",
+	"css": ".CLASS:root{--radius:5px}\n.CLASS{padding:0 20px 50px;width:100%;max-width:900px;margin:30px auto}\n.CLASS .UI_gap{margin-bottom:var(--margin)}\n.CLASS .UI_label{font-size:11px;color:#B0B0B0;margin-bottom:5px}\n.CLASS .UI_label i{margin-right:5px}\n.CLASS .UI_border{border:1px solid #E0E0E0;padding:var(--gap);border-radius:var(--radius)}",
+	"editor": {
+		"download": true,
+		"paths": "",
+		"codes": "",
+		"upload": ""
+	},
+	"components": {
+		"callout": "https://uibuilder.totaljs.com/components/callout/editor.html",
+		"headline": "https://uibuilder.totaljs.com/components/headline/editor.html",
+		"enable": "https://uibuilder.totaljs.com/components/enable/editor.html",
+		"columns": "https://uibuilder.totaljs.com/components/columns/editor.html",
+		"video": "https://uibuilder.totaljs.com/components/video/editor.html",
+		"counter": "https://uibuilder.totaljs.com/components/counter/editor.html",
+		"container": "https://uibuilder.totaljs.com/components/container/editor.html",
+		"cards": "https://uibuilder.totaljs.com/components/cards/editor.html",
+		"form": "https://uibuilder.totaljs.com/components/form/editor.html",
+		"show": "https://uibuilder.totaljs.com/components/show/editor.html",
+		"datagenerator": "https://uibuilder.totaljs.com/components/datagenerator/editor.html",
+		"datareader": "https://uibuilder.totaljs.com/components/datareader/editor.html",
+		"datasource": "https://uibuilder.totaljs.com/components/datasource/editor.html",
+		"paragraph": "https://uibuilder.totaljs.com/components/paragraph/editor.html",
+		"sendtoinput": "https://uibuilder.totaljs.com/components/sendtoinput/editor.html",
+		"comment": "https://uibuilder.totaljs.com/components/comment/editor.html",
+		"hr": "https://uibuilder.totaljs.com/components/hr/editor.html",
+		"sound": "https://uibuilder.totaljs.com/components/sound/editor.html",
+		"image": "https://uibuilder.totaljs.com/components/image/editor.html",
+		"checkbox": "https://uibuilder.totaljs.com/components/checkbox/editor.html",
+		"textbox": "https://uibuilder.totaljs.com/components/textbox/editor.html",
+		"textarea": "https://uibuilder.totaljs.com/components/textarea/editor.html",
+		"icon": "https://uibuilder.totaljs.com/components/icon/editor.html",
+		"color": "https://uibuilder.totaljs.com/components/color/editor.html",
+		"tabs": "https://uibuilder.totaljs.com/components/tabs/editor.html",
+		"checkboxlist": "https://uibuilder.totaljs.com/components/checkboxlist/editor.html",
+		"infocard": "https://uibuilder.totaljs.com/components/infocard/editor.html",
+		"testreader": "https://uibuilder.totaljs.com/components/testreader/editor.html",
+		"barchart": "https://uibuilder.totaljs.com/components/barchart/editor.html"
+	},
+	"children": [
+		[
+			{
+				"children": [
+					[]
+				],
+				"id": "1",
+				"component": "container",
+				"config": {
+					"name": "Container"
+				}
+			}
+		]
+	],
+	"inputs": [],
+	"outputs": [],
+	"args": {},
+	"id": "lde7vrmt"
+}

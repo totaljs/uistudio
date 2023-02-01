@@ -1,0 +1,198 @@
+<ui-plugin config="aclass:1">
+
+	<ui-component name="designer" path="?.data" config="render:?/render;publish:?/publish;save:?/save;groups:?.groups;close:?/close"></ui-component>
+
+	<header>
+		<label><i class="ti ti-book-open"></i>@(Library)</label>
+		<ui-bind path="user" config="exec:?/permissions"  class="toolbar hidden">
+			<button class="exec" data-exec="?/create"><i class="ti ti-plus-circle"></i>@(Create)</button>
+		</ui-bind>
+	</header>
+
+	<ui-component name="viewbox" config="parent:auto;margin:60" class="invisible">
+		<div class="padding">
+			<ui-component name="search" path="?.search" config="selector:figure">
+				<ui-bind path="?.list" config="template" class="block">
+					<script type="text/html">
+						{{ foreach g in value }}
+							{{ if g.name }}
+							<div class="caption m" style="padding:0 10px">
+								<label>{{ g.name }}</label>
+							</div>
+							{{ fi }}
+							<div class="listing m">
+							{{ foreach m in g.items }}
+								<figure class="exec" data-exec="?/open" data-id="{{ m.id }}" data-search="{{ m.name }}">
+									<section>
+										<div class="pull-right ml10">
+											<span class="exec" data-exec="?/options" data-prevent="true"><i class="ti ti-cog"></i></span>
+										</div>
+										<div class="pull-right gray ml10" style="border-left:1px solid #E0E0E0;border-right:1px solid #E0E0E0;padding:0 10px">{{ if m.published }}<span class="blue exec" data-exec="?/output" data-prevent="true"><i class="ti ti-eye"></i></span>{{ else }}<i class="ti ti-eye silver"></i>{{ fi }}</div>
+										<div class="pull-right silver"><span class="pull-right">{{ m.size | filesize }}</span></div>
+										<div>
+											<div class="pull-left" style="border-right:1px solid #E0E0E0;padding-right:8px;margin-right:8px;{{ if m.color }}color:{{ m.color }}{{ fi }}"><i class="{{ m.icon }}"></i></div>
+											<div>{{ m.name }}</div>
+										</div>
+									</section>
+								</figure>
+							{{ end }}
+							</div>
+						{{ end }}
+					</script>
+				</ui-bind>
+			</ui-component>
+		</div>
+	</ui-component>
+
+
+</ui-plugin>
+
+<form id="uibuildrenderer" method="POST" target="_blank">
+	<input name="data" type="hidden" />
+</form>
+
+<script>
+	PLUGIN(function(exports) {
+
+		RECONFIGURE('designer', { upload: location.origin + '/upload/' });
+
+		exports.reload = function() {
+			exports.refresh();
+		};
+
+		exports.refresh = function() {
+			exports.tapi('library ERROR', function(response) {
+
+				var groups = {};
+
+				for (var item of response) {
+
+					if (!item.group)
+						item.group = '$';
+
+					if (groups[item.group])
+						groups[item.group].push(item);
+					else
+						groups[item.group] = [item];
+				}
+
+				var items = [];
+				var def = { name: '', items: groups.$ };
+
+				delete groups.$;
+
+				for (var key in groups)
+					items.push({ name: key, items: groups[key] });
+
+				items.quicksort('name');
+				items.unshift(def);
+
+				response.reverse();
+				exports.set('groups', Object.keys(groups));
+				exports.set('list', items);
+				exports.set('items @hideloading', response);
+			});
+		};
+
+		exports.create = function() {
+			exports.set('data', {});
+		};
+
+		exports.search = function() {
+			SETTER('floatingsearch/show');
+		};
+
+		exports.open = function(el) {
+			var id = ATTRD(el);
+			SET('common.unsaved', true);
+			exports.ajax('GET /data/{0}_editor.json @showloading ERROR'.format(id), 'data @hideloading');
+		};
+
+		exports.close = function() {
+			SET('common.unsaved', false);
+		};
+
+		exports.output = function(el) {
+			var id = ATTRD(el);
+			W.open('/render/{0}/'.format(id));
+		};
+
+		exports.save = function(data) {
+			SETTER('sounds/play', 'badge');
+			SETTER('notify/success', '@(Item "{name}" has been saved)'.args(data, 'escape'));
+			exports.tapi('library_save @showloading ERROR', { data: data }, exports.refresh);
+		};
+
+		exports.publish = function(data) {
+			SETTER('sounds/play', 'badge');
+			SETTER('notify/success', '@(Item "{name}" has been published)'.args(data, 'escape'));
+			exports.tapi('library_publish @showloading ERROR', { data: data }, exports.refresh);
+		};
+
+		exports.render = function(data) {
+			var form = $('#uibuildrenderer');
+			form.attr('action', '/render/');
+			form.find('input').val(JSON.stringify(data));
+			form.submit();
+		};
+
+		exports.options = function(el) {
+			var id = ATTRD(el);
+			var model = exports.model;
+			var item = model.items.findItem('id', id);
+			var opt = {};
+			opt.align = 'right';
+			opt.element = el;
+			opt.items = [];
+
+			opt.items.push({ id: 'edit', name: '@(Edit design)', classname: 'b', icon: 'ti ti-paint-brush' });
+
+			if (item.published) {
+				opt.items.push('-');
+				opt.items.push({ id: 'preview', name: '@(Preview)', icon: 'ti ti-eye blue' });
+				opt.items.push({ id: 'copy', name: '@(Copy link)', icon: 'ti ti-link' });
+			}
+
+			opt.items.push('-');
+			opt.items.push({ id: 'remove', name: '@(Remove)', icon: 'ti ti-remove red' });
+			opt.callback = function(selected) {
+
+				switch (selected.id) {
+					case 'edit':
+						exports.open(id);
+						break;
+					case 'preview':
+						exports.output(id);
+						break;
+					case 'copy':
+						SETTER('clipboard/copy', location.origin + '/data/{0}.json'.format(id));
+						SETTER('sounds/play', 'badge');
+						SETTER('notify/success', '@(Copied)');
+						break;
+					case 'remove':
+						exports.remove(el);
+						break;
+				}
+
+
+			};
+			SETTER('menu/show', opt);
+		};
+
+		exports.remove = function(el) {
+			var id = ATTRD(el);
+			SETTER('approve/show', '@(Are you sure you want to remove selected items?)', '"ti ti-trash" @(Remove)', function() {
+				SETTER('sounds/play', 'badge');
+				exports.tapi('library_remove/{0} @showloading ERROR'.format(id), exports.refresh);
+			});
+		};
+
+		exports.permissions = function(value, path, el) {
+			el.tclass('hidden', UNAUTHORIZED('library_create'));
+		};
+
+		exports.refresh();
+
+	});
+
+</script>

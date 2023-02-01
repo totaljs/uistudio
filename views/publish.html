@@ -27,7 +27,7 @@
 	<ui-component name="LAZY directory" config="placeholder:@(Search)"></ui-component>
 	<ui-component name="LAZY approve" config="cancel:@(Cancel)"></ui-component>
 	<ui-component name="LAZY colorpicker"></ui-component>
-	<ui-component name="LAZY datepicker"></ui-component>
+	<ui-component name="LAZY datepicker" config="today:@(Set today)"></ui-component>
 	<ui-component name="LAZY floatinginput"></ui-component>
 	<ui-component name="LAZY clipboard"></ui-component>
 
@@ -36,7 +36,18 @@
 	</ui-component>
 
 	<script>
+
 		(function() {
+
+			var days = '@(SU,MO,TU,WE,TH,FR,SO)'.split(',');
+			var months = '@(January,February,March,April,May,June,July,August,September,October,November,December)'.split(',');
+
+			for (var i = 0; i < DAYS.length; i++)
+				DAYS[i] = days[i];
+
+			for (var i = 0; i < MONTHS.length; i++)
+				MONTHS[i] = months[i];
+
 			var arr = location.pathname.split('/').trim();
 			AJAX('GET /data/{0}.json'.format(arr[1]), function(response, err) {
 

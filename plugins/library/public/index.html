@@ -11,35 +11,46 @@
 
 	<ui-component name="viewbox" config="parent:auto;margin:60" class="invisible">
 		<div class="padding">
-			<ui-component name="search" path="?.search" config="selector:figure">
-				<ui-bind path="?.list" config="template" class="block">
-					<script type="text/html">
-						{{ foreach g in value }}
-							{{ if g.name }}
-							<div class="caption m" style="padding:0 10px">
-								<label>{{ g.name }}</label>
-							</div>
-							{{ fi }}
-							<div class="listing m">
-							{{ foreach m in g.items }}
-								<figure class="exec" data-exec="?/open" data-id="{{ m.id }}" data-search="{{ m.name }}">
-									<section>
-										<div class="pull-right ml10">
-											<span class="exec" data-exec="?/options" data-prevent="true"><i class="ti ti-cog"></i></span>
-										</div>
-										<div class="pull-right gray ml10" style="border-left:1px solid #E0E0E0;border-right:1px solid #E0E0E0;padding:0 10px">{{ if m.published }}<span class="blue exec" data-exec="?/output" data-prevent="true"><i class="ti ti-eye"></i></span>{{ else }}<i class="ti ti-eye silver"></i>{{ fi }}</div>
-										<div class="pull-right silver"><span class="pull-right">{{ m.size | filesize }}</span></div>
-										<div>
-											<div class="pull-left" style="border-right:1px solid #E0E0E0;padding-right:8px;margin-right:8px;{{ if m.color }}color:{{ m.color }}{{ fi }}"><i class="{{ m.icon }}"></i></div>
-											<div>{{ m.name }}</div>
-										</div>
-									</section>
-								</figure>
+
+			<ui-component name="empty" path="?.list" config="parent:auto">
+
+				<script type="text/html">
+					<div>@(The library doesn't contain any items)</div>
+					<div class="mt5">
+						<span class="link exec" data-exec="?/create"><i class="ti ti-plus-circle green mr5"></i>@(Create first)</span>
+					</div>
+				</script>
+
+				<ui-component name="search" path="?.search" config="selector:figure">
+					<ui-bind path="?.list" config="template" class="block">
+						<script type="text/html">
+							{{ foreach g in value }}
+								{{ if g.name }}
+								<div class="caption m" style="padding:0 10px">
+									<label>{{ g.name }}</label>
+								</div>
+								{{ fi }}
+								<div class="listing m">
+								{{ foreach m in g.items }}
+									<figure class="exec" data-exec="?/open" data-id="{{ m.id }}" data-search="{{ m.name }}">
+										<section>
+											<div class="pull-right ml10">
+												<span class="exec" data-exec="?/options" data-prevent="true"><i class="ti ti-cog"></i></span>
+											</div>
+											<div class="pull-right gray ml10" style="border-left:1px solid #E0E0E0;border-right:1px solid #E0E0E0;padding:0 10px">{{ if m.published }}<span class="blue exec" data-exec="?/output" data-prevent="true"><i class="ti ti-eye"></i></span>{{ else }}<i class="ti ti-eye silver"></i>{{ fi }}</div>
+											<div class="pull-right silver"><span class="pull-right">{{ m.size | filesize }}</span></div>
+											<div>
+												<div class="pull-left" style="border-right:1px solid #E0E0E0;padding-right:8px;margin-right:8px;{{ if m.color }}color:{{ m.color }}{{ fi }}"><i class="{{ m.icon }}"></i></div>
+												<div>{{ m.name }}</div>
+											</div>
+										</section>
+									</figure>
+								{{ end }}
+								</div>
 							{{ end }}
-							</div>
-						{{ end }}
-					</script>
-				</ui-bind>
+						</script>
+					</ui-bind>
+				</ui-component>
 			</ui-component>
 		</div>
 	</ui-component>
@@ -151,6 +162,7 @@
 				opt.items.push('-');
 				opt.items.push({ id: 'preview', name: '@(Preview)', icon: 'ti ti-eye blue' });
 				opt.items.push({ id: 'copy', name: '@(Copy link)', icon: 'ti ti-link' });
+				opt.items.push({ id: 'copy2', name: '@(Copy link to the render)', icon: 'ti ti-copy' });
 			}
 
 			opt.items.push('-');
@@ -165,7 +177,8 @@
 						exports.output(id);
 						break;
 					case 'copy':
-						SETTER('clipboard/copy', location.origin + '/data/{0}.json'.format(id));
+					case 'copy2':
+						SETTER('clipboard/copy', location.origin + (selected.id === 'copy' ? '/data/{0}.json' : '/render/{0}/').format(id));
 						SETTER('sounds/play', 'badge');
 						SETTER('notify/success', '@(Copied)');
 						break;
@@ -173,7 +186,6 @@
 						exports.remove(el);
 						break;
 				}
-
 
 			};
 			SETTER('menu/show', opt);

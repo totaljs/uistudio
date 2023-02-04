@@ -51,6 +51,11 @@
 
 			var response = PARSE(PARSE($('#renderdata').html()));
 			if (response && response.id) {
+
+				var id = NAV.query.openplatformid;
+				if (id)
+					response.urlify = url => QUERIFY(url, { openplatformid: id });
+
 				document.title = response.name;
 				UIBuilder.build('#uibuilderdom', response, function(response) {
 					W.app = response;

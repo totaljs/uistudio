@@ -89,6 +89,10 @@
 				openplatform = '?openplatform=' + encodeURIComponent(openplatform);
 			} else
 				common.ready = true;
+
+			if (!W.APP)
+				common.ready = true;
+
 			DEF.api = '/api/' + openplatform;
 			$('body').rclass('invisible', 200);
 		})();

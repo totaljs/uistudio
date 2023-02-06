@@ -1,6 +1,6 @@
 <ui-plugin config="aclass:1">
 
-	<ui-component name="designer" path="?.data" config="render:?/render;publish:?/publish;save:?/save;groups:?.groups;close:?/close"></ui-component>
+	<ui-component name="designer" path="?.data" config="render:?/render;publish:?/publish;save:?/save;groups:?.groups;apps:?.apps;close:?/close"></ui-component>
 
 	<header>
 		<label><i class="ti ti-book-open"></i>@(Library)</label>
@@ -21,36 +21,44 @@
 					</div>
 				</script>
 
-				<ui-component name="search" path="?.search" config="selector:figure">
-					<ui-bind path="?.list" config="template" class="block">
-						<script type="text/html">
-							{{ foreach g in value }}
-								{{ if g.name }}
-								<div class="caption m" style="padding:0 10px">
-									<label>{{ g.name }}</label>
-								</div>
-								{{ fi }}
-								<div class="listing m">
-								{{ foreach m in g.items }}
-									<figure class="exec" data-exec="?/open" data-id="{{ m.id }}" data-search="{{ m.name }}">
-										<section>
-											<div class="pull-right ml10">
-												<span class="exec" data-exec="?/options" data-prevent="true"><i class="ti ti-cog"></i></span>
-											</div>
-											<div class="pull-right gray ml10" style="border-left:1px solid #E0E0E0;border-right:1px solid #E0E0E0;padding:0 10px">{{ if m.published }}<span class="blue exec" data-exec="?/output" data-prevent="true"><i class="ti ti-eye"></i></span>{{ else }}<i class="ti ti-eye silver"></i>{{ fi }}</div>
-											<div class="pull-right silver"><span class="pull-right">{{ m.size | filesize }}</span></div>
-											<div>
-												<div class="pull-left" style="border-right:1px solid #E0E0E0;padding-right:8px;margin-right:8px;{{ if m.color }}color:{{ m.color }}{{ fi }}"><i class="{{ m.icon }}"></i></div>
-												<div>{{ m.name }}</div>
-											</div>
-										</section>
-									</figure>
+				<div>
+					<div class="m">
+						<div style="max-width:250px;width:100%">
+							<ui-component name="searchinput" path="?.search" config="autofocus:1;placeholder:@(Search)"></ui-component>
+						</div>
+					</div>
+					<ui-component name="search" path="?.search" config="selector:figure;datasource:?.list">
+						<ui-bind path="?.list" config="template" class="block">
+							<script type="text/html">
+								{{ foreach g in value }}
+									{{ if g.name }}
+									<div class="caption m" style="padding:0 10px">
+										<label>{{ g.name }}</label>
+									</div>
+									{{ fi }}
+									<div class="listing m">
+									{{ foreach m in g.items }}
+										<figure class="exec" data-exec="?/open" data-id="{{ m.id }}" data-search="{{ m.name }}">
+											<section>
+												<div class="pull-right ml10">
+													<span class="exec" data-exec="?/options" data-prevent="true"><i class="ti ti-cog"></i></span>
+												</div>
+												<div class="pull-right gray ml10" style="border-left:1px solid #E0E0E0;border-right:1px solid #E0E0E0;padding:0 10px">{{ if m.published }}<span class="blue exec" data-exec="?/output" data-prevent="true"><i class="ti ti-eye"></i></span>{{ else }}<i class="ti ti-eye silver"></i>{{ fi }}</div>
+												<div class="pull-right silver"><span class="pull-right">{{ m.size | filesize }}</span></div>
+												<div>
+													<div class="pull-left" style="border-right:1px solid #E0E0E0;padding-right:8px;margin-right:8px;{{ if m.color }}color:{{ m.color }}{{ fi }}"><i class="{{ m.icon }}"></i></div>
+													<div>{{ m.name }}</div>
+												</div>
+											</section>
+										</figure>
+									{{ end }}
+									</div>
 								{{ end }}
-								</div>
-							{{ end }}
-						</script>
-					</ui-bind>
-				</ui-component>
+							</script>
+						</ui-bind>
+					</ui-component>
+				</div>
+
 			</ui-component>
 		</div>
 	</ui-component>
@@ -75,6 +83,7 @@
 			exports.tapi('library ERROR', function(response) {
 
 				var groups = {};
+				var apps = [];
 
 				for (var item of response) {
 
@@ -85,6 +94,9 @@
 						groups[item.group].push(item);
 					else
 						groups[item.group] = [item];
+
+					if (item.published)
+						apps.push({ id: location.origin + '/data/' + item.id + '.json', name: item.name, icon: item.icon, color: item.color, inputs: item.inputs || EMPTYARRAY, outputs: item.outputs || EMPTYARRAY });
 				}
 
 				var items = [];
@@ -98,10 +110,12 @@
 				items.quicksort('name');
 				items.unshift(def);
 
+
 				response.reverse();
 				exports.set('groups', Object.keys(groups));
 				exports.set('list', items);
 				exports.set('items @hideloading', response);
+				exports.set('apps', apps);
 			});
 		};
 
@@ -161,7 +175,7 @@
 			if (item.published) {
 				opt.items.push('-');
 				opt.items.push({ id: 'preview', name: '@(Preview)', icon: 'ti ti-eye blue' });
-				opt.items.push({ id: 'copy', name: '@(Copy link)', icon: 'ti ti-link' });
+				opt.items.push({ id: 'copy', name: '@(Copy link to the JSON schema)', icon: 'ti ti-link' });
 				opt.items.push({ id: 'copy2', name: '@(Copy link to the render)', icon: 'ti ti-copy' });
 			}
 

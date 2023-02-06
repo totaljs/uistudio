@@ -39,3 +39,5 @@ header .toolbar button { height: 30px; font-size: 12px; }
 .divider div { position: absolute; left: 0; top: -10px; right: 0; text-align: center; }
 .divider span { background-color: #F0F0F0; border-radius: var(--radius); padding: 5px 8px; font-size: 11px; color: #999; }
 .divider span i { margin-right: 5px; }
+
+.ui-searchinput { border-radius: var(--radius); }

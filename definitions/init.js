@@ -23,7 +23,7 @@ CONF.op_icon = 'ti ti-pencil-paintbrush';
 LOADCONFIG(db.config);
 
 // UI components
-COMPONENTATOR('ui', 'exec,locale,aselected,page,viewbox,input,importer,box,validate,loading,selected,intranetcss,notify,message,errorhandler,empty,menu,ready,search,tangular-filesize,sounds,datagrid,unsaved,clipboard,approve');
+COMPONENTATOR('ui', 'exec,locale,aselected,page,viewbox,input,importer,box,validate,loading,selected,intranetcss,notify,message,errorhandler,empty,menu,ready,search,tangular-filesize,sounds,datagrid,unsaved,clipboard,approve,searchinput');
 
 // Permissions
 ON('ready', function() {

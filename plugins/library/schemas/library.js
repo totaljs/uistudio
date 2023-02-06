@@ -39,6 +39,8 @@ NEWSCHEMA('Library', function(schema) {
 			item.type = data.type;
 			item.category = data.category;
 			item.group = data.group;
+			item.inputs = data.inputs;
+			item.outputs = data.outputs;
 			item.description = data.description;
 
 			MAIN.db.save();

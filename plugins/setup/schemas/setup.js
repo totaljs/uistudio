@@ -6,6 +6,7 @@ NEWSCHEMA('Setup', function(schema) {
 	schema.define('secret_tms', String);
 	schema.define('op_reqtoken', String);
 	schema.define('op_restoken', String);
+	schema.define('token', String);
 
 	schema.action('permissions', {
 		name: 'Check permissions',

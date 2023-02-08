@@ -92,4 +92,31 @@ NEWSCHEMA('Library', function(schema) {
 		}
 	});
 
+	schema.action('export', {
+		name: 'List of builds',
+		action: function($) {
+			var output = [];
+			MAIN.db.items.wait(function(item, next) {
+
+				if (item.published) {
+
+					F.Fs.readFile(PATH.public('data/' + item.id + '.json'), function(err, response) {
+
+						if (response) {
+							var meta = JSON.parse(response.toString('utf8'), (key, val) => key !== 'components' && key !== 'children' ? val : null);
+							output.push({ id: meta.id, icon: meta.icon, description: meta.description, type: meta.type, author: meta.author, version: meta.version, inputs: meta.inputs, outputs: meta.outputs });
+						}
+
+						next();
+					});
+
+				} else
+					next();
+
+			}, function() {
+				$.callback(output);
+			});
+		}
+	});
+
 });

@@ -14,8 +14,16 @@
 			<div class="padding">
 
 				<div>
+
 					<div class="m">
 						<ui-component name="input" path="?.name" config="required:1">@(Name)</ui-component>
+					</div>
+
+					<div class="m">
+						<ui-component name="input" path="?.token" config="camouflage:1">@(Access token)</ui-component>
+						<div class="help">
+							<span class="exec link" data-exec="?/token">@(Generate)</span>. @(This token can be used in the Total.js Flow to import created apps into UI Studio. Access will not be allowed if the token is empty.)
+						</div>
 					</div>
 
 					<div class="m">
@@ -95,11 +103,11 @@
 		};
 
 		exports.generate = function() {
-			exports.set('secret_tms @type:show', GUID(35));
+			exports.set('secret_tms @type:show @change', GUID(35));
 		};
 
 		exports.token = function() {
-			exports.set('token @type:show', GUID(30));
+			exports.set('token @type:show @change', GUID(35));
 		};
 
 	});

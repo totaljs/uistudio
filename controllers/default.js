@@ -1,6 +1,7 @@
 exports.install = function() {
 
 	ROUTE('+GET   /*', index);
+	ROUTE('GET   /*', index);
 	ROUTE('POST   /upload/', upload, 1024 * 100);
 	ROUTE('FILE   /download/*.*', download);
 
@@ -8,10 +9,27 @@ exports.install = function() {
 
 };
 
+async function apps() {
+	var self = this;
+
+	if (CONF.token && self.query.token && self.query.token === CONF.token) {
+		var data = {};
+		data.name = CONF.name;
+		data.items = await CALL('Library --> export').promise(self);
+		self.json(data);
+	} else
+		self.invalid('Invalid token');
+}
+
 function index() {
 
 	var self = this;
 	var plugins = [];
+
+	if (self.query.token) {
+		apps.call(self);
+		return;
+	}
 
 	for (var key in F.plugins) {
 		var item = F.plugins[key];

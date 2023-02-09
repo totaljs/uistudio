@@ -116,7 +116,7 @@
 				}
 
 				var items = [];
-				var def = { name: '', items: groups.$ };
+				var def = { name: '', items: groups.$ || [] };
 
 				delete groups.$;
 
@@ -124,7 +124,9 @@
 					items.push({ name: key, items: groups[key] });
 
 				items.quicksort('name');
-				items.unshift(def);
+
+				if (def.items.length)
+					items.unshift(def);
 
 				response.reverse();
 				exports.set('groups', Object.keys(groups));

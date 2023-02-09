@@ -23,6 +23,7 @@
 	<ui-component name="sounds" config="volume:40"></ui-component>
 	<ui-component name="unsaved" path="common.unsaved"></ui-component>
 
+	<ui-component name="LAZY filereader"></ui-component>
 	<ui-component name="LAZY approve" config="cancel:@(Cancel)"></ui-component>
 	<ui-component name="LAZY notify" config="position:bottom right"></ui-component>
 	<ui-component name="LAZY message" config="style:2"></ui-component>
@@ -80,6 +81,7 @@
 		common.name = '@{CONF.name}';
 		common.plugins = PARSE('#pluginsdata');
 		common.ready = false;
+		common.openplatform = '';
 
 		// Injects Token to every API request
 		(function() {
@@ -94,6 +96,7 @@
 				common.ready = true;
 
 			DEF.api = '/api/' + openplatform;
+			common.openplatform = openplatform;
 			$('body').rclass('invisible', 200);
 		})();
 

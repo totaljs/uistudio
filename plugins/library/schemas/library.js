@@ -71,6 +71,43 @@ NEWSCHEMA('Library', function(schema) {
 		}
 	});
 
+	schema.action('clone', {
+		name: 'Clone item',
+		params: 'id:String',
+		action: function($) {
+
+			var params = $.params;
+			var item = MAIN.db.items.findItem('id', params.id);
+			var newbie = CLONE(item);
+			var files = [];
+
+			newbie.id = Date.now().toString(36);
+			newbie.name += ' (CLONED)';
+			newbie.dtcreated = newbie.dtupdated = NOW;
+
+			files.push({ read: PATH.public('/data/' + item.id + '.json'), save: PATH.public('/data/' + newbie.id + '.json') });
+			files.push({ read: PATH.public('/data/' + item.id + '_editor.json'), save: PATH.public('/data/' + newbie.id + '_editor.json') });
+
+			files.wait(function(item, next) {
+				F.Fs.readFile(item.read, function(err, response) {
+					if (response) {
+						var meta = JSON.parse(response.toString('utf8'));
+						meta.id = newbie.id;
+						meta.name = newbie.name;
+						F.Fs.writeFile(item.save, JSON.stringify(meta), next);
+					} else
+						next();
+				});
+			}, function() {
+				MAIN.db.items.push(newbie);
+				MAIN.db.save();
+				$.publish(newbie);
+				$.success(newbie.id);
+			});
+
+		}
+	});
+
 	schema.action('remove', {
 		name: 'Remove item',
 		params: 'id:String',
@@ -104,7 +141,7 @@ NEWSCHEMA('Library', function(schema) {
 
 						if (response) {
 							var meta = JSON.parse(response.toString('utf8'), (key, val) => key !== 'components' && key !== 'children' ? val : null);
-							output.push({ id: meta.id, icon: meta.icon, description: meta.description, type: meta.type, author: meta.author, version: meta.version, inputs: meta.inputs, outputs: meta.outputs });
+							output.push({ id: meta.id, icon: meta.icon, group: meta.group || item.group, name: item.name, description: meta.description, type: meta.type, author: meta.author, version: meta.version, inputs: meta.inputs, outputs: meta.outputs });
 						}
 
 						next();
@@ -113,9 +150,7 @@ NEWSCHEMA('Library', function(schema) {
 				} else
 					next();
 
-			}, function() {
-				$.callback(output);
-			});
+			}, () => $.callback(output));
 		}
 	});
 

@@ -6,13 +6,17 @@ exports.visible = user => user.sa || user.permissions.includes('library');
 
 exports.install = function() {
 
-	ROUTE('+API    /api/    -library              *Library   --> list');
-	ROUTE('+API    /api/    +library_save         *Library   --> save');
-	ROUTE('+API    /api/    +library_publish      *Library   --> publish');
-	ROUTE('+API    /api/    +library_remove/id    *Library   --> remove');
+	ROUTE('+API    /api/    -library                *Library   --> list');
+	ROUTE('+API    /api/    +library_save           *Library   --> save');
+	ROUTE('+API    /api/    +library_clone/{id}     *Library   --> clone');
+	ROUTE('+API    /api/    +library_publish        *Library   --> publish');
+	ROUTE('+API    /api/    +library_remove/{id}    *Library   --> remove');
 
-	ROUTE('POST /render/');
-	ROUTE('GET  /render/{id}/', render);
+	ROUTE('POST  /render/');
+	ROUTE('GET   /render/{id}/', render);
+
+	ROUTE('+GET  /download/{id}/', download);
+	ROUTE('+GET  /download/', download);
 
 };
 
@@ -28,4 +32,30 @@ function render(id) {
 	} else
 		$.invalid(404);
 
+}
+
+function download(id) {
+	var $ = this;
+
+	if (id) {
+		var item = MAIN.db.items.findItem('id', id);
+		if (item)
+			$.file('/data/' + id + '_editor.json', item.name + '.json');
+		else
+			$.invalid(404);
+	} else {
+
+		var arr = [];
+		for (var item of MAIN.db.items)
+			arr.push(item.id + '_editor.json');
+
+		var filename = PATH.tmp(Date.now().toString(36) + '.zip');
+
+		SHELL('zip {0} {1}'.format(filename, arr.join(' ')), function(err) {
+			if (err)
+				$.invalid(err);
+			else
+				$.file('~' + filename, 'export.zip');
+		}, PATH.public('data'));
+	}
 }

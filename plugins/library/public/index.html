@@ -1,5 +1,12 @@
 <style>
-	.~PATH~ .type-part .name { color: #8C42F6; }
+	.CLASS .type-part { background-color: #E7CAF94F !important; }
+	.CLASS .type-dashboard { background-color: #FFC16E2E !important; }
+	.CLASS .type-flowboard { background-color: #B7E0A93B !important; }
+	.CLASS .listing2 { column-gap: 7px; }
+	.CLASS .listing2 figure { margin-bottom: 7px; }
+	.CLASS .listing2 figure:hover { filter:brightness(0.9); }
+	.CLASS .controls { border-left: 1px solid rgba(0,0,0,0.1); border-right: 1px solid rgba(0,0,0,0.1); padding: 0 10px; }
+	.CLASS .icon { border-right: 1px solid rgba(0,0,0,0.1); margin-right: 8px; padding-right: 8px; }
 </style>
 
 <ui-plugin config="aclass:1">
@@ -9,61 +16,65 @@
 	<header>
 		<label><i class="ti ti-book-open"></i>@(Library)</label>
 		<ui-bind path="user" config="exec:?/permissions" class="toolbar">
+			<button class="exec" data-exec="?/importer"><i class="ti ti-cloud-upload"></i>@(Import)</button>
+			<button class="exec" data-exec="?/export"><i class="ti ti-cloud-download"></i>@(Export)</button>
 			<button class="exec" data-exec="?/refresh"><i class="ti ti-refresh"></i>@(Refresh)</button>
 			<button class="exec D" data-exec="?/create"><i class="ti ti-plus-circle"></i>@(Create)</button>
 		</ui-bind>
 	</header>
 
 	<ui-component name="viewbox" config="parent:auto;margin:60" class="invisible">
-		<div class="padding">
+		<div>
+			<div class="padding">
 
-			<ui-component name="empty" path="?.list" config="parent:auto">
+				<ui-component name="empty" path="?.list" config="parent:auto">
 
-				<script type="text/html">
-					<div>@(The library doesn't contain any items)</div>
-					<div class="mt5">
-						<span class="link exec" data-exec="?/create"><i class="ti ti-plus-circle green mr5"></i>@(Create first)</span>
-					</div>
-				</script>
-
-				<div>
-					<div class="m">
-						<div style="max-width:250px;width:100%">
-							<ui-component name="searchinput" path="?.search" config="autofocus:1;placeholder:@(Search)"></ui-component>
+					<script type="text/html">
+						<div>@(The library doesn't contain any items)</div>
+						<div class="mt5">
+							<span class="link exec" data-exec="?/create"><i class="ti ti-plus-circle green mr5"></i>@(Create first)</span>
 						</div>
-					</div>
-					<ui-component name="search" path="?.search" config="selector:figure;datasource:?.list">
-						<ui-bind path="?.list" config="template" class="block">
-							<script type="text/html">
-								{{ foreach g in value }}
-									{{ if g.name }}
-									<div class="caption m">
-										<label>{{ g.name }}</label>
-									</div>
-									{{ fi }}
-									<div class="listing2 m grid-4">
-									{{ foreach m in g.items }}
-										<figure class="exec type-{{ m.type }}" data-exec="?/open" data-id="{{ m.id }}" data-search="{{ m.name }}">
-											<section>
-												<div class="pull-right ml10">
-													<span class="exec" data-exec="?/options" data-prevent="true"><i class="ti ti-cog"></i></span>
-												</div>
-												<div class="pull-right gray ml10" style="border-left:1px solid #E0E0E0;border-right:1px solid #E0E0E0;padding:0 10px">{{ if m.published }}<span class="blue exec" data-exec="?/output" data-prevent="true"><i class="ti ti-eye"></i></span>{{ else }}<i class="ti ti-eye silver"></i>{{ fi }}</div>
-												<div>
-													<div class="pull-left" style="border-right:1px solid #E0E0E0;padding-right:8px;margin-right:8px;{{ if m.color }}color:{{ m.color }}{{ fi }}"><i class="{{ m.icon }}"></i></div>
-													<div class="name">{{ m.name }}</div>
-												</div>
-											</section>
-										</figure>
-									{{ end }}
-									</div>
-								{{ end }}
-							</script>
-						</ui-bind>
-					</ui-component>
-				</div>
+					</script>
 
-			</ui-component>
+					<div>
+						<div class="m">
+							<div style="max-width:250px;width:100%">
+								<ui-component name="searchinput" path="?.search" config="autofocus:1;placeholder:@(Search)"></ui-component>
+							</div>
+						</div>
+						<ui-component name="search" path="?.search" config="selector:figure;datasource:?.list">
+							<ui-bind path="?.list" config="template" class="block">
+								<script type="text/html">
+									{{ foreach g in value }}
+										{{ if g.name }}
+										<div class="caption m">
+											<label>{{ g.name }}</label>
+										</div>
+										{{ fi }}
+										<div class="listing2 m grid-4 grid-md-2 grid-sm-2 grid-xs-1">
+										{{ foreach m in g.items }}
+											<figure class="exec type-{{ m.type }}" data-exec="?/open" data-id="{{ m.id }}" data-search="{{ m.name }}">
+												<section>
+													<div class="pull-right ml10">
+														<span class="exec" data-exec="?/options" data-prevent="true"><i class="ti ti-cog"></i></span>
+													</div>
+													<div class="pull-right gray ml10 controls">{{ if m.published }}<span class="blue exec" data-exec="?/output" data-prevent="true"><i class="ti ti-eye"></i></span>{{ else }}<i class="ti ti-eye silver"></i>{{ fi }}</div>
+													<div>
+														<div class="pull-left icon" style="{{ if m.color }}color:{{ m.color }}{{ fi }}"><i class="{{ m.icon }}"></i></div>
+														<div class="name">{{ m.name }}</div>
+													</div>
+												</section>
+											</figure>
+										{{ end }}
+										</div>
+									{{ end }}
+								</script>
+							</ui-bind>
+						</ui-component>
+					</div>
+
+				</ui-component>
+			</div>
 		</div>
 	</ui-component>
 
@@ -75,6 +86,7 @@
 </form>
 
 <script>
+
 	PLUGIN(function(exports) {
 
 		RECONFIGURE('designer', { upload: location.origin + '/upload/' });
@@ -113,7 +125,6 @@
 
 				items.quicksort('name');
 				items.unshift(def);
-
 
 				response.reverse();
 				exports.set('groups', Object.keys(groups));
@@ -158,6 +169,11 @@
 			exports.tapi('library_publish @showloading ERROR', { data: data }, exports.refresh);
 		};
 
+		exports.clone = function(el) {
+			var id = ATTRD(el);
+			exports.tapi('library_clone/{0} @showloading ERROR'.format(id), exports.refresh);
+		};
+
 		exports.render = function(data) {
 			var form = $('#uibuildrenderer');
 			form.attr('action', '/render/');
@@ -175,6 +191,8 @@
 			opt.items = [];
 
 			opt.items.push({ id: 'edit', name: '@(Edit design)', classname: 'b', icon: 'ti ti-paint-brush' });
+			opt.items.push({ id: 'clone', name: '@(Clone)', icon: 'ti ti-clone' });
+			opt.items.push({ id: 'download', name: '@(Download)', icon: 'ti ti-download' });
 
 			if (item.published) {
 				opt.items.push('-');
@@ -188,6 +206,12 @@
 			opt.callback = function(selected) {
 
 				switch (selected.id) {
+					case 'clone':
+						exports.clone(id);
+						break;
+					case 'download':
+						location.href = '/download/{0}/{1}'.format(id, common.openplatform);
+						break;
 					case 'edit':
 						exports.open(id);
 						break;
@@ -219,6 +243,25 @@
 
 		exports.permissions = function(value, path, el) {
 			el.find('.D').prop('disabled', UNAUTHORIZED('library_create'));
+		};
+
+		exports.importer = function() {
+			var opt = {};
+			opt.accept = 'application/json';
+			opt.multiple = true;
+			opt.callback = function(file) {
+				var data = PARSE(file.body);
+				if (data) {
+					SETTER('sounds/play', 'badge');
+					SETTER('notify/success', '@(Item "{name}" has been saved)'.args(data, 'escape'));
+					exports.tapi('library_save @showloading ERROR', { data: data }, exports.refresh);
+				}
+			};
+			SETTER('filereader/open', opt);
+		};
+
+		exports.export = function() {
+			location.href = '/download/' + common.openplatform;
 		};
 
 		exports.refresh();

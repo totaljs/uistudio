@@ -11,6 +11,9 @@ var config = db.config;
 if (!config.name)
 	config.name = 'UI Studio';
 
+if (!config.token)
+	config.token = GUID(35);
+
 if (!config.cdn)
 	config.cdn = '//cdn.componentator.com';
 

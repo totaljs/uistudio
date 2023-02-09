@@ -20,10 +20,13 @@
 					</div>
 
 					<div class="m">
-						<ui-component name="input" path="?.token" config="camouflage:1">@(Access token)</ui-component>
+						<ui-component name="input" path="?.token" config="camouflage:1">@(Access token for the Flow)</ui-component>
 						<div class="help">
-							<span class="exec link" data-exec="?/token">@(Generate)</span>. @(This token can be used in the Total.js Flow to import created apps into UI Studio. Access will not be allowed if the token is empty.)
+							<div><span class="exec link" data-exec="?/token">@(Generate)</span>. @(This token can be used in the Total.js Flow to import created apps into UI Studio. Access will not be allowed if the token is empty.)</div>
 						</div>
+						<ui-bind path="?.token" config="show" class="block">
+							<div class="mt10 fs12 exec link" data-exec="?/copylink"><i class="ti ti-copy mr5"></i>@(Copy the link to the Flow)</div>
+						</ui-bind>
 					</div>
 
 					<div class="m">
@@ -106,8 +109,21 @@
 			exports.set('secret_tms @type:show @change', GUID(35));
 		};
 
+		exports.copylink = function() {
+			var model = exports.model;
+			SETTER('clipboard/copy', location.origin + '?token=' + model.token);
+			SETTER('sounds/play', 'badge');
+			SETTER('notify/success', '@(Copied)');
+		};
+
 		exports.token = function() {
 			exports.set('token @type:show @change', GUID(35));
+		};
+
+		exports.copy = function(el) {
+			SETTER('clipboard/copy', el.text());
+			SETTER('sounds/play', 'badge');
+			SETTER('notify/success', '@(Copied)');
 		};
 
 	});

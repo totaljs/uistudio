@@ -20,7 +20,7 @@
 <body>
 
 	<ui-component name="exec"></ui-component>
-	<ui-component name="locale"></ui-component>
+	<ui-component name="locale" config="requests:1@{if user};language:@{user.language}@{fi}"></ui-component>
 
 	<ui-component name="LAZY menu" config="style:2"></ui-component>
 	<ui-component name="LAZY icons"></ui-component>
@@ -56,9 +56,12 @@
 					return;
 				}
 
-				var id = NAV.query.openplatformid;
-				if (id)
-					response.urlify = url => QUERIFY(url, { openplatformid: id });
+				var opid = NAV.query.openplatformid;
+				var ssid = NAV.query.ssid;
+
+				response.urlify = function(url) {
+					return (ssid || opid) ? QUERIFY(url, { openplatformid: opid, ssid: ssid }) : url;
+				};
 
 				document.title = response.name;
 				UIBuilder.build('#uibuilderdom', response, function(response) {

@@ -17,6 +17,9 @@ if (!config.token)
 if (!config.cdn)
 	config.cdn = '//cdn.componentator.com';
 
+// Important
+PATH.mkdir(PATH.public('data'));
+
 // Fixed settings
 CONF.allow_custom_titles = true;
 CONF.version = '1';
@@ -36,3 +39,4 @@ ON('ready', function() {
 			OpenPlatform.permissions.push.apply(OpenPlatform.permissions, item.permissions);
 	}
 });
+

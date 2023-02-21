@@ -17,6 +17,7 @@ NEWSCHEMA('Library', function(schema) {
 			var filename = PATH.public('/data/' + data.id + '_editor.json');
 			var buffer = Buffer.from(JSON.stringify(data, null, '\t'), 'utf8');
 
+			TOUCH('/data/' + data.id + '_editor.json');
 			F.Fs.writeFile(filename, buffer, NOOP);
 
 			var item = MAIN.db.items.findItem('id', data.id);
@@ -57,6 +58,8 @@ NEWSCHEMA('Library', function(schema) {
 
 			var data = model.data;
 			var filename = PATH.public('/data/' + data.id + '.json');
+			TOUCH('/data/' + data.id + '.json');
+
 			F.Fs.writeFile(filename, JSON.stringify(data), NOOP);
 
 			var item = MAIN.db.items.findItem('id', data.id);
@@ -124,6 +127,10 @@ NEWSCHEMA('Library', function(schema) {
 				MAIN.db.save();
 				$.success();
 				$.publish(item);
+
+				TOUCH('/data/' + data.id + '.json');
+				TOUCH('/data/' + data.id + '_editor.json');
+
 			} else
 				$.invalid(404);
 		}

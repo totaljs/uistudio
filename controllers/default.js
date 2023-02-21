@@ -4,6 +4,7 @@ exports.install = function() {
 	ROUTE('GET   /*', index);
 	ROUTE('POST   /upload/', upload, 1024 * 100);
 	ROUTE('FILE   /download/*.*', download);
+	ROUTE('FILE   /data/*.json', jsondata);
 
 	CORS();
 
@@ -73,4 +74,9 @@ function download(req, res) {
 		res.filefs('files', fileid, true);
 	else
 		res.throw404();
+}
+
+function jsondata(req, res) {
+	res.nocache();
+	res.continue();
 }

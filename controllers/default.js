@@ -1,8 +1,7 @@
 exports.install = function() {
 
 	ROUTE('+GET   /*', index);
-	ROUTE('GET   /*', index);
-	ROUTE('POST   /upload/', upload, 1024 * 100);
+	ROUTE('+POST  /upload/', upload, 1024 * 100);
 	ROUTE('FILE   /download/*.*', download);
 	ROUTE('FILE   /data/*.json', jsondata);
 

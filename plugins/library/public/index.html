@@ -93,7 +93,7 @@
 
 	PLUGIN(function(exports) {
 
-		RECONFIGURE('designer', { upload: location.origin + '/upload/' });
+		RECONFIGURE('designer', { upload: location.origin + '/upload/' + common.openplatform });
 
 		exports.reload = function() {
 			exports.refresh();

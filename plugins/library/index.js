@@ -14,6 +14,7 @@ exports.install = function() {
 
 	ROUTE('POST  /render/');
 	ROUTE('GET   /render/{id}/', render);
+	ROUTE('GET   /play/', play);
 
 	ROUTE('+GET  /download/{id}/', download);
 	ROUTE('+GET  /download/', download);
@@ -21,6 +22,14 @@ exports.install = function() {
 };
 
 NEWPUBLISH('render', 'id:String,name:String,version:String,group:String,icon:Icon,color:Color,dtcreated:Date,dtupdated:Date,size:Number');
+
+function play() {
+	var $ = this;
+	if ($.query.url) {
+		$.view('play');
+	} else
+		$.invalid('@(Missing "url" argument)');
+}
 
 function render(id) {
 

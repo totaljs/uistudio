@@ -8,10 +8,6 @@ COMPONENT('designer', 'url:https://uibuilder.totaljs.com', function(self, config
 
 	self.make = function() {
 
-		// var dom = document.createElement('DIV');
-		// $('body').prepend(dom);
-		// self.replace($(dom));
-
 		self.aclass(cls + ' hidden');
 		self.css({ position: 'absolute', 'z-index': 100, left: 0, top: 0, right: 0, bottom: 0 });
 		self.on('resize + resize2', self.resize);

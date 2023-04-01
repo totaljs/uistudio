@@ -61,6 +61,10 @@
 					return (ssid || opid) ? QUERIFY(url, { openplatformid: opid, ssid: ssid }) : url;
 				};
 
+				UIBuilder.view = function(id, query, callback) {
+					AJAX(QUERIFY('GET ' + response.querify(id query), callback);
+				};
+
 				document.title = response.name;
 				UIBuilder.build('#uibuilderdom', response, function(response) {
 					W.app = response;

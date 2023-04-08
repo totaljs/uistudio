@@ -30,7 +30,7 @@ COMPONENT('designer', 'url:https://uibuilder.totaljs.com', function(self, config
 					config.close && self.EXEC(config.close);
 					break;
 				case 'ready':
-					var msg = { TYPE: 'init', data: self.get(), upload: config.upload, groups: config.groups ? GET(self.makepath(config.groups)) : null, apps: config.apps ? GET(self.makepath(config.apps)) : null, uibuilder: 1 };
+					var msg = { TYPE: 'init', data: self.get(), upload: config.upload, groups: config.groups ? GET(self.makepath(config.groups)) : null, apps: config.apps ? GET(self.makepath(config.apps)) : null, paths: config.paths ? GET(self.makepath(config.paths)) : null, codes: config.codes ? GET(self.makepath(config.codes)) : null, views: config.views ? GET(self.makepath(config.views)) : null, uibuilder: 1 };
 					iframe.contentWindow.postMessage(STRINGIFY(msg), '*');
 					break;
 				case 'save':

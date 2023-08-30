@@ -1,5 +1,7 @@
 # UI Studio
 
+[![Made in EU](https://cdn.componentator.com/eu-small.png)](https://european-union.europa.eu/)
+
 - [Join Total.js Telegram](https://t.me/totaljs)
 - [Support](https://www.totaljs.com/support/)
 

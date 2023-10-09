@@ -19,6 +19,8 @@ exports.install = function() {
 	ROUTE('+GET  /download/{id}/', download);
 	ROUTE('+GET  /download/', download);
 
+	ROUTE('FILE  /db.json', db);
+
 };
 
 NEWPUBLISH('render', 'id:String,name:String,version:String,group:String,icon:Icon,color:Color,dtcreated:Date,dtupdated:Date,size:Number');
@@ -67,4 +69,26 @@ function download(id) {
 				$.file('~' + filename, 'export.zip');
 		}, PATH.public('data'));
 	}
+}
+
+function db(req, res) {
+
+	F.Fs.readdir(PATH.public('components'), function(err, response) {
+
+		var obj = {};
+		var arr = (CONF.components || '').split(',').trim();
+
+		for (let i = 0; i < arr.length; i++) {
+			if (arr[i])
+				obj['cdn' + i] = arr[i];
+		}
+
+		if (response) {
+			for (let m of response)
+				obj[m] = '/components/{0}/editor.html';
+		}
+
+		res.json(obj);
+	});
+
 }

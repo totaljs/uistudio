@@ -128,8 +128,8 @@ NEWSCHEMA('Library', function(schema) {
 				$.success();
 				$.publish(item);
 
-				TOUCH('/data/' + data.id + '.json');
-				TOUCH('/data/' + data.id + '_editor.json');
+				TOUCH('/data/' + item.id + '.json');
+				TOUCH('/data/' + item.id + '_editor.json');
 
 			} else
 				$.invalid(404);
